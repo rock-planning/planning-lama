@@ -1,9 +1,9 @@
 #! /bin/sh
 
 # Paths to planner components
-TRANSLATE="./lama/translate/translate.py"
-PREPROCESS="./lama/preprocess/preprocess"
-SEARCH="./lama/search/release-search"
+TRANSLATE="@CMAKE_CURRENT_SOURCE_DIR@/lama/translate/translate.py"
+PREPROCESS="@CMAKE_CURRENT_SOURCE_DIR@/lama/preprocess/preprocess"
+SEARCH="@CMAKE_CURRENT_SOURCE_DIR@/lama/search/release-search"
 
 run_planner() {
     echo "1. Running translator"
