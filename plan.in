@@ -2,15 +2,15 @@
 
 # Paths to planner components
 TRANSLATE="@CMAKE_CURRENT_SOURCE_DIR@/lama/translate/translate.py"
-PREPROCESS="@CMAKE_CURRENT_SOURCE_DIR@/lama/preprocess/preprocess"
-SEARCH="@CMAKE_CURRENT_SOURCE_DIR@/lama/search/release-search"
+PREPROCESS=`which lama-planner-preprocess`
+SEARCH=`which lama-planner-search`
 
 run_planner() {
-    echo "1. Running translator"
+    echo "1. Running translator: $TRANSLATE"
     "$TRANSLATE" "$1" "$2"
-    echo "2. Running preprocessor"
+    echo "2. Running preprocessor: $PREPROCESS"
     "$PREPROCESS" < output.sas
-    echo "3. Running search"
+    echo "3. Running search: $SEARCH"
     "$SEARCH" "fFlLi" "$3" < output
 }
 
