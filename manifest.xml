@@ -4,7 +4,7 @@
       No additional functionality is provided, adaptation to the original sources are made only to include the planner into the 
       build infrastructure.
   </description>
-  <author>Thomas Roehr/thomas.roehr@dfki.de</author>
+  <maintainer>Thomas Roehr/thomas.roehr@dfki.de</maintainer>
   <license>GPL</license>
   <url>http://www.informatik.uni-freiburg.de/~srichter/software/seq-sat-lama-2011.tar.gz</url>
   <depend package="base/types" />
