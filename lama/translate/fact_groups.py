@@ -1,6 +1,6 @@
 # -*- coding: latin-1 -*-
 
-from __future__ import with_statement
+
 
 import invariant_finder
 import pddl
@@ -44,7 +44,7 @@ class GroupCoverQueue:
             self._update_top()
         else:
             self.max_size = 0
-    def __nonzero__(self):
+    def __bool__(self):
         return self.max_size > 1
     def pop(self):
         result = list(self.top) # Copy; this group will shrink further.
@@ -73,7 +73,7 @@ def choose_groups(groups, reachable_facts, partial_encoding=True):
         group = queue.pop()
         uncovered_facts.difference_update(group)
         result.append(group)
-    print len(uncovered_facts), "uncovered facts"
+    print(len(uncovered_facts), "uncovered facts")
     #for fact in uncovered_facts:
     #  print fact
     result += [[fact] for fact in uncovered_facts]

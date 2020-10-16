@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: latin-1 -*-
 
-from __future__ import with_statement
+
 
 import itertools
 
@@ -25,9 +25,9 @@ class PrologProgram:
         self.rules.append(rule)
     def dump(self):
         for fact in self.facts:
-            print fact
+            print(fact)
         for rule in self.rules:
-            print getattr(rule, "type", "none"), rule
+            print(getattr(rule, "type", "none"), rule)
     def normalize(self):
         # Normalized prolog programs have the following properties:
         # 1. Each variable that occurs in the effect of a rule also occurs in its
@@ -66,7 +66,7 @@ class PrologProgram:
                 for var in eff_vars:
                     rule.add_condition(pddl.Atom("@object", [var]))
         if must_add_predicate:
-            print "Unbound effect variables: Adding @object predicate."
+            print("Unbound effect variables: Adding @object predicate.")
             self.facts += [Fact(pddl.Atom("@object", [obj])) for obj in self.objects]
     def split_duplicate_arguments(self):
         """Make sure that no variable occurs twice within the same symbolic fact,
@@ -78,7 +78,7 @@ class PrologProgram:
         printed_message = False
         for rule in self.rules:
             if rule.rename_duplicate_variables() and not printed_message:
-                print "Duplicate arguments: Adding equality conditions."
+                print("Duplicate arguments: Adding equality conditions.")
                 printed_message = True
     def convert_trivial_rules(self):
         """Convert rules with an empty condition into facts.
@@ -93,7 +93,7 @@ class PrologProgram:
                 self.add_fact(pddl.Atom(rule.effect.predicate, rule.effect.args))
                 must_delete_rules.append(i)
         if must_delete_rules:
-            print "Trivial rules: Converted to facts."
+            print("Trivial rules: Converted to facts.")
             for rule_no in must_delete_rules[::-1]:
                 del self.rules[rule_no]
 

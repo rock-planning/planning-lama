@@ -1,5 +1,5 @@
-import pddl_types
-import tasks # for Task.FUNCTION_SYMBOLS, needed in parse_term()
+from . import pddl_types
+from . import tasks # for Task.FUNCTION_SYMBOLS, needed in parse_term()
 
 def parse_condition(alist):
     condition = parse_condition_aux(alist, False)
@@ -65,10 +65,15 @@ class Condition(object):
         self.hash = hash((self.__class__, self.parts))
     def __hash__(self):
         return self.hash
+
+    def __lt__(self, other):
+        return self.hash < other.hash
+    def __le__(self, other):
+         return self.hash <= other.hash
     def __ne__(self, other):
         return not self == other
     def dump(self, indent="  "):
-        print "%s%s" % (indent, self._dump())
+        print("%s%s" % (indent, self._dump()))
         for part in self.parts:
             part.dump(indent + "  ")
     def _dump(self):
@@ -121,6 +126,9 @@ class Condition(object):
         return False
 
 class ConstantCondition(Condition):
+    # Defining __eq__ blocks inheritance of __hash__, so must set it explicitly.
+    __hash__ = Condition.__hash__
+
     parts = ()
     def __init__(self):
         self.hash = hash(self.__class__)
@@ -147,6 +155,9 @@ class Truth(ConstantCondition):
         return Falsity()
 
 class JunctorCondition(Condition):
+    # Defining __eq__ blocks inheritance of __hash__, so must set it explicitly.
+    __hash__ = Condition.__hash__
+
     def __eq__(self, other):
         # Compare hash first for speed reasons.
         return (self.hash == other.hash and
@@ -203,6 +214,9 @@ class Disjunction(JunctorCondition):
         return True
 
 class QuantifiedCondition(Condition):
+    # Defining __eq__ blocks inheritance of __hash__, so must set it explicitly.
+    __hash__ = Condition.__hash__
+
     def __init__(self, parameters, parts):
         self.parameters = tuple(parameters)
         self.parts = tuple(parts)
@@ -261,6 +275,9 @@ class ExistentialCondition(QuantifiedCondition):
         return True
 
 class Literal(Condition):
+    # Defining __eq__ blocks inheritance of __hash__, so must set it explicitly.
+    __hash__ = Condition.__hash__
+
     parts = []
     def __eq__(self, other):
         # Compare hash first for speed reasons.
@@ -289,6 +306,10 @@ class Literal(Condition):
 
 class Atom(Literal):
     negated = False
+
+    def __hash__(self):
+        return hash(self.__class__)
+
     def to_untyped_strips(self):
         return [self]
     def instantiate(self, var_mapping, init_facts, fluent_facts, result):
@@ -345,7 +366,7 @@ class Term(object):
     def __eq__(self, other):
         return (self.__class__ == other.__class__ and self.name == other.name)
     def dump(self, indent="  "):
-        print "%s%s %s" % (indent, self._dump(), self.name)
+        print("%s%s %s" % (indent, self._dump(), self.name))
         for arg in self.args:
             arg.dump(indent + "  ")
     def _dump(self):

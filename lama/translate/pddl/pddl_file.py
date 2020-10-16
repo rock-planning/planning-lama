@@ -5,20 +5,20 @@ import sys
 import os.path
 import re
 
-import parser
+from . import parser
 
-import tasks
+from . import tasks
 
-def parse_pddl_file(type, filename):
+def parse_pddl_file(filetype, filename):
     try:
-        return parser.parse_nested_list(file(filename))
-    except IOError, e:
+        return parser.parse_nested_list(open(filename))
+    except IOError as e:
         raise SystemExit("Error: Could not read file: %s\nReason: %s." %
                          (e.filename, e))
-    except parser.ParseError, e:
-        raise SystemExit("Error: Could not parse %s file: %s\n" % (type, filename))
+    except parser.ParseError as e:
+        raise SystemExit("Error: Could not parse %s file: %s\n" % (filetype, filename))
 
-def open(task_filename=None, domain_filename=None):
+def open_pddl_file(task_filename=None, domain_filename=None):
     if task_filename is None:
         if len(sys.argv) not in (2, 3):
             raise SystemExit("Error: Need exactly one or two command line arguments.\n"
@@ -48,4 +48,4 @@ def open(task_filename=None, domain_filename=None):
     return tasks.Task.parse(domain_pddl, task_pddl)
 
 if __name__ == "__main__":
-    open().dump()
+    open_pddl_file().dump()

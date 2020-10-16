@@ -33,12 +33,12 @@ class DomainTransitionGraph(object):
         return reachable
 
     def dump(self):
-        print "SIZE", self.size
-        print "INIT", self.init
-        print "ARCS:"
+        print("SIZE", self.size)
+        print("INIT", self.init)
+        print("ARCS:")
         for source, destinations in sorted(self.arcs.items()):
             for destination in sorted(destinations):
-                print "  %d => %d" % (source, destination)
+                print("  %d => %d" % (source, destination))
 
 
 def build_dtgs(task):
@@ -97,11 +97,11 @@ class VarValueRenaming(object):
             new_values_for_var = []
             for value in range(old_domain_size):
                 if value in new_domain:
-                    new_values_for_var.append(new_value_counter.next())
+                    new_values_for_var.append(next(new_value_counter))
                 else:
                     self.num_removed_values += 1
                     new_values_for_var.append(always_false)
-            new_size = new_value_counter.next()
+            new_size = next(new_value_counter)
             assert new_size == len(new_domain)
 
             self.new_var_nos.append(self.new_var_count)
@@ -151,8 +151,8 @@ class VarValueRenaming(object):
             except (Impossible, DoesNothing):
                 num_removed += 1
                 if DEBUG:
-                    print "Removed operator: %s" % op.name
-        print "%d operators removed" % num_removed
+                    print("Removed operator: %s" % op.name)
+        print("%d operators removed" % num_removed)
         operators[:] = new_operators
 
     def apply_to_axioms(self, axioms):
@@ -163,7 +163,7 @@ class VarValueRenaming(object):
                 new_axioms.append(axiom)
             except (Impossible, DoesNothing):
                 if DEBUG:
-                    print "Removed axiom:"
+                    print("Removed axiom:")
                     axiom.dump()
         axioms[:] = new_axioms
 
@@ -197,7 +197,8 @@ class VarValueRenaming(object):
             raise DoesNothing
         axiom.effect = new_var, new_value
 
-    def translate_pre_post(self, (var_no, pre, post, cond)):
+    def translate_pre_post(self, xxx_todo_changeme):
+        (var_no, pre, post, cond) = xxx_todo_changeme
         new_var_no, new_post = self.translate_pair((var_no, post))
         if pre == -1:
             new_pre = -1
@@ -218,7 +219,8 @@ class VarValueRenaming(object):
             raise DoesNothing
         return new_var_no, new_pre, new_post, cond
 
-    def translate_pair(self, (var_no, value)):
+    def translate_pair(self, xxx_todo_changeme1):
+        (var_no, value) = xxx_todo_changeme1
         new_var_no = self.new_var_nos[var_no]
         new_value = self.new_values[var_no][value]
         return new_var_no, new_value
@@ -241,10 +243,10 @@ class VarValueRenaming(object):
                 new_var_no, new_value = self.translate_pair((var_no, value))
                 if new_value is always_true:
                     if DEBUG:
-                        print "Removed true proposition: %s" % value_name
+                        print("Removed true proposition: %s" % value_name)
                 elif new_value is always_false:
                     if DEBUG:
-                        print "Removed false proposition: %s" % value_name
+                        print("Removed false proposition: %s" % value_name)
                 else:
                     new_key[new_var_no][new_value] = value_name
         assert all((None not in value_names) for value_names in new_key)
@@ -273,9 +275,9 @@ def build_renaming(dtgs):
 
 def dump_translation_key(translation_key):
     for var_no, values in enumerate(translation_key):
-        print "var %d:" % var_no
+        print("var %d:" % var_no)
         for value_no, value in enumerate(values):
-            print "%2d: %s" % (value_no, value)
+            print("%2d: %s" % (value_no, value))
 
 def filter_unreachable_propositions(sas_task, mutex_key, translation_key):
     # This procedure is a bit of an afterthought, and doesn't fit the
@@ -305,4 +307,4 @@ def filter_unreachable_propositions(sas_task, mutex_key, translation_key):
     renaming.apply_to_task(sas_task)
     renaming.apply_to_translation_key(translation_key)
     renaming.apply_to_mutex_key(mutex_key)
-    print "%d propositions removed" % renaming.num_removed_values
+    print("%d propositions removed" % renaming.num_removed_values)

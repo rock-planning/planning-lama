@@ -1,10 +1,10 @@
-import actions
-import axioms
-import conditions
-import predicates
-import pddl_types
-import functions
-import f_expression
+from . import actions
+from . import axioms
+from . import conditions
+from . import predicates
+from . import pddl_types
+from . import functions
+from . import f_expression
 
 class Task(object):
     FUNCTION_SYMBOLS = dict()
@@ -45,30 +45,30 @@ class Task(object):
     parse = staticmethod(parse)
 
     def dump(self):
-        print "Problem %s: %s [%s]" % (self.domain_name, self.task_name,
-                                       self.requirements)
-        print "Types:"
+        print("Problem %s: %s [%s]" % (self.domain_name, self.task_name,
+                                       self.requirements))
+        print("Types:")
         for type in self.types:
-            print "  %s" % type
-        print "Objects:"
+            print("  %s" % type)
+        print("Objects:")
         for obj in self.objects:
-            print "  %s" % obj
-        print "Predicates:"
+            print("  %s" % obj)
+        print("Predicates:")
         for pred in self.predicates:
-            print "  %s" % pred
-        print "Functions:"
+            print("  %s" % pred)
+        print("Functions:")
         for func in self.functions:
-            print "  %s" % func
-        print "Init:"
+            print("  %s" % func)
+        print("Init:")
         for fact in self.init:
-            print "  %s" % fact
-        print "Goal:"
+            print("  %s" % fact)
+        print("Goal:")
         self.goal.dump()
-        print "Actions:"
+        print("Actions:")
         for action in self.actions:
             action.dump()
         if self.axioms:
-            print "Axioms:"
+            print("Axioms:")
             for axiom in self.axioms:
                 axiom.dump()
 
@@ -87,15 +87,15 @@ class Requirements(object):
 def parse_domain(domain_pddl):
     iterator = iter(domain_pddl)
 
-    assert iterator.next() == "define"
-    domain_line = iterator.next()
+    assert next(iterator) == "define"
+    domain_line = next(iterator)
     assert domain_line[0] == "domain" and len(domain_line) == 2
     yield domain_line[1]
 
-    opt_requirements = iterator.next()
+    opt_requirements = next(iterator)
     if opt_requirements[0] == ":requirements":
         yield Requirements(opt_requirements[1:])
-        opt_types = iterator.next()
+        opt_types = next(iterator)
     else:
         yield Requirements([":strips"])
         opt_types = opt_requirements
@@ -104,7 +104,7 @@ def parse_domain(domain_pddl):
     if opt_types[0] == ":types":
         the_types.extend(pddl_types.parse_typed_list(opt_types[1:],
                                                      constructor=pddl_types.Type))
-        opt_constants = iterator.next()
+        opt_constants = next(iterator)
     else:
         opt_constants = opt_types
     pddl_types.set_supertypes(the_types)
@@ -114,7 +114,7 @@ def parse_domain(domain_pddl):
 
     if opt_constants[0] == ":constants":
         yield pddl_types.parse_typed_list(opt_constants[1:])
-        pred = iterator.next()
+        pred = next(iterator)
     else:
         yield []
         pred = opt_constants
@@ -125,14 +125,14 @@ def parse_domain(domain_pddl):
                                  [pddl_types.TypedObject("?x", "object"),
                                   pddl_types.TypedObject("?y", "object")])])
 
-    opt_functions = iterator.next() #action costs enable restrictive version of fluents
+    opt_functions = next(iterator) #action costs enable restrictive version of fluents
     if opt_functions[0] == ":functions":
         the_functions = pddl_types.parse_typed_list(opt_functions[1:],
                                                     constructor=functions.Function.parse_typed, functions=True)
         for function in the_functions:
             Task.FUNCTION_SYMBOLS[function.name] = function.type
         yield the_functions
-        first_action = iterator.next()
+        first_action = next(iterator)
     else:
         yield []
         first_action = opt_functions
@@ -152,18 +152,18 @@ def parse_domain(domain_pddl):
 def parse_task(task_pddl):
     iterator = iter(task_pddl)
 
-    assert iterator.next() == "define"
-    problem_line = iterator.next()
+    assert next(iterator) == "define"
+    problem_line = next(iterator)
     assert problem_line[0] == "problem" and len(problem_line) == 2
     yield problem_line[1]
-    domain_line = iterator.next()
+    domain_line = next(iterator)
     assert domain_line[0] == ":domain" and len(domain_line) == 2
     yield domain_line[1]
 
-    objects_opt = iterator.next()
+    objects_opt = next(iterator)
     if objects_opt[0] == ":objects":
         yield pddl_types.parse_typed_list(objects_opt[1:])
-        init = iterator.next()
+        init = next(iterator)
     else:
         yield []
         init = objects_opt
@@ -174,14 +174,14 @@ def parse_task(task_pddl):
         if fact[0] == "=":
             try:
                 initial.append(f_expression.parse_assignment(fact))
-            except ValueError, e:
+            except ValueError as e:
                 raise SystemExit("Error in initial state specification\n" +
                                  "Reason: %s." %  e)
         else:
             initial.append(conditions.Atom(fact[0], fact[1:]))
     yield initial
 
-    goal = iterator.next()
+    goal = next(iterator)
     assert goal[0] == ":goal" and len(goal) == 2
     yield conditions.parse_condition(goal[1])
 
