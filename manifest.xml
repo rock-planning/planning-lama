@@ -7,5 +7,5 @@
   <maintainer>Thomas Roehr/thomas.roehr@dfki.de</maintainer>
   <license>GPL</license>
   <url>http://www.informatik.uni-freiburg.de/~srichter/software/seq-sat-lama-2011.tar.gz</url>
-  <depend package="base/types" />
+  <depend package="base/cmake" />
 </package>
