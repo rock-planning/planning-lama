@@ -77,38 +77,15 @@ File [pre-format.txt](doc/pre-format.txt) contains a description of the output f
 
 ## LICENSE & CONTACT
 
-License:
-LAMA was written by Silvia Richter and Matthias Westphal,
-copyright (c) 2008 NICTA and Matthias Westphal.
-Distributed under the GNU General Public License (GPL,
-see separate licence file).
-This program uses source code of the Fast Downward planner,
-(c) 2003-2004 by Malte Helmert and Silvia Richter. Permission
-to redistribute this code under the terms of the GPL has been
-granted.
+LAMA was written by Silvia Richter and Matthias Westphal, copyright (c) 2008 NICTA and Matthias Westphal. Distributed under the GNU General Public License (GPL, see separate licence file).
 
-Note of Caution: Please be aware that LAMA has bugs. In particular the
-component responsible for parsing and translating the PDDL input has
-known problems. However, for all classical (i.e. non-numerical, no
-preferences etc.) tasks from past international planning competitions,
-formulations exist that LAMA can parse. E.g.: for Airport, use the
-STRIPS formulation. For Freecell (IPC 2002), the untyped variant. For
-Philosophers, Optical Telegraph and PSR, use the ADL variant with
-derived predicates. For Mprime and Assembly, domain files are included
-in this distribution in the "bench-patch" directory which correct
-known bugs of the competition files (Mprime) or features not supported
-by LAMA (Assembly).
+This program uses source code of the Fast Downward planner, (c) 2003-2004 by Malte Helmert and Silvia Richter. Permission to redistribute this code under the terms of the GPL has been granted.
 
-If you encounter further problems, please email me at
-silvia.richter@nicta.com.au. The lama/translate directory also
-contains a patch that can be applied to skip the invariant generation
-step in the translator component. This eliminates many problems and
-may be helpful e.g. if you are interested in using the framework of
-LAMA with a heuristic other than the landmark heuristic.
+Note of Caution: Please be aware that LAMA has bugs. In particular the component responsible for  parsing and translating the PDDL input has known problems. However, for all classical (i.e. non-numerical, no preferences etc.) tasks from past international planning competitions, formulations exist that LAMA can parse. E.g.: for Airport, use the STRIPS formulation. For Freecell (IPC 2002), the untyped variant. For Philosophers, Optical Telegraph and PSR, use the ADL variant with derived predicates. For Mprime and Assembly, domain files are included in this distribution in the  "bench-patch" directory which correct known bugs of the competition files (Mprime) or features not supported by LAMA (Assembly).
 
-Lastly, I would be happy to know if you are using LAMA. Just drop me a
-short email at the above address. Then I can also inform you about bug
-fixes and new versions.
+If you encounter further problems, please email me at silvia.richter@nicta.com.au. The lama/translate directory also contains a patch that can be applied to skip the invariant generation step in the translator component. This eliminates many problems and may be helpful e.g. if you are interested in using the framework of LAMA with a heuristic other than the landmark heuristic.
+
+Lastly, I would be happy to know if you are using LAMA. Just drop me a short email at the above address. Then I can also inform you about bug fixes and new versions.
 
 ### Questions and Feedback
 
