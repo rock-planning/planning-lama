@@ -2,22 +2,20 @@
 
 MAINDIR=$PWD
 
-WORKSPACE=$PWD/planning-ws
-mkdir $WORKSPACE && cd $WORKSPACE
 
-INSTALL_DIR=$WORKSPACE/install
+INSTALL_DIR=$PWD/lama-planner
 
+# Get, compile, and install base-cmaks share libs
+rm -rf base-cmake
 git clone https://github.com/rock-core/base-cmake.git base-cmake
-git clone https://github.com/rock-planning/planning-lama.git lama
-
-cd $WORKSPACE/base-cmake
+cd base-cmake
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR ..
 make install
-
 export Rock_DIR=$INSTALL_DIR/share/rock/cmake/
 
-cd $WORKSPACE/lama
+# compile & install LAMA
+cd $MAINDIR
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR ..
 make install
