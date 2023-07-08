@@ -87,6 +87,14 @@ def get_initial_invariants(task):
 MAX_CANDIDATES = 100000
 MAX_TIME = 300
 
+def take_time():
+    # time.clock() deprecated in Python < 3.8 https://bit.ly/3oBIa6c
+    try:
+        return time.process_time()    # Python 3.8
+    except:
+        return time.clock()    # Python < 3.8
+
+
 def find_invariants(task, reachable_action_params):
     candidates = deque(get_initial_invariants(task))
     print(len(candidates), "initial candidates")
@@ -99,10 +107,10 @@ def find_invariants(task, reachable_action_params):
             candidates.append(invariant)
             seen_candidates.add(invariant)
 
-    start_time = time.clock()
+    start_time = take_time()
     while candidates:
         candidate = candidates.popleft()
-        if time.clock() - start_time > MAX_TIME:
+        if take_time() - start_time > MAX_TIME:
             print("Time limit reached, aborting invariant generation")
             return
         if candidate.check_balance(balance_checker, enqueue_func):
