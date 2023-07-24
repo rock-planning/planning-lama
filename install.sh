@@ -1,12 +1,12 @@
 #!/bin/bash
 
 MAINDIR=$PWD
-
-
 INSTALL_DIR=$PWD/lama-planner
 
-# Get, compile, and install base-cmaks share libs
-rm -rf base-cmake
+# Cleanup previous install
+rm -rf  $INSTALL_DIR build base-cmake
+
+# Get, compile, and install CMAKE Rock share libs
 git clone https://github.com/rock-core/base-cmake.git base-cmake
 cd base-cmake
 mkdir build && cd build
@@ -22,5 +22,7 @@ make install
 
 export PATH=$INSTALL_DIR/bin:$PATH
 
+echo
+echo "LAMA planner installed in folder $INSTALL_DIR"
 lama-planner --help
 
