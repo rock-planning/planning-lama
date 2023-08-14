@@ -1,9 +1,10 @@
 #! /bin/sh
 
 # Paths to planner components
-TRANSLATE="@CMAKE_INSTALL_PREFIX@/lib/lama/translate/translate.py"
-PREPROCESS=`which lama-planner-preprocess`
-SEARCH=`which lama-planner-search`
+ROOT="@CMAKE_INSTALL_PREFIX@"
+TRANSLATE="$ROOT/lib/lama/translate/translate.py"
+PREPROCESS="$ROOT/bin/lama-planner-preprocess"
+SEARCH="$ROOT/bin/lama-planner-search"
 
 run_planner() {
     echo "1. Running translator: $TRANSLATE"
@@ -27,7 +28,7 @@ check_input_files() {
 
 # Make sure we have exactly 3 command line arguments
 if [ $# -ne 3 ]; then
-    echo "Usage: \"plan <domain_file> <problem_file> <result_file>\""
+    echo "Usage: \"lama-planner <domain_file> <problem_file> <result_file>\""
     exit 1
 fi
 
